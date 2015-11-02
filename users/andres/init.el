@@ -2,9 +2,12 @@
 (setq-default js2-basic-offset 2)
 (setq js-indent-level 2)
 
+(menu-bar-mode 1)
+(set-scroll-bar-mode 'right)
+
 ;; Disallow scrolling with mouse wheel
-(when window-system
-  (mouse-wheel-mode -1))
+;; (when window-system
+;;   (mouse-wheel-mode -1))
 
 ;; Monday ftw
 (set-variable 'calendar-week-start-day 1)
@@ -14,11 +17,11 @@
 (define-key global-map (kbd "M-s -") 'zoom-out)
 
 ;; No more scrolling surprises
-(global-unset-key (kbd "C-v"))
-(global-unset-key (kbd "M-v"))
+;; (global-unset-key (kbd "C-v"))
+;; (global-unset-key (kbd "M-v"))
 
 ;; No graphics please o.O
-(setq speedbar-use-images nil)
+;; (setq speedbar-use-images nil)
 
 ;; god-mode tweaks
 ;(god-mode)
@@ -48,4 +51,4 @@
 
 ;; Use GNU ls - install with:
 ;;    brew install xz coreutils
-(setq insert-directory-program "gls")
+;; (setq insert-directory-program "gls")

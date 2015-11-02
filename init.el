@@ -1,7 +1,8 @@
 ;; Turn off mouse interface early in startup to avoid momentary display
+
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+; (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
 ;; No splash screen please ... jeez
 (setq inhibit-startup-message t)
@@ -196,7 +197,11 @@
 
 ;; Fill column indicator
 (require 'fill-column-indicator)
-(setq fci-rule-color "#111122")
+(setq fci-rule-color "#BBBBBB")
+(setq fci-rule-width 5)
+;;(setq fci-rule-color "darkblue")
+(add-hook 'after-change-major-mode-hook 'fci-mode)
+
 
 ;; Browse kill ring
 (require 'browse-kill-ring)

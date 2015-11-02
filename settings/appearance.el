@@ -26,6 +26,12 @@
   (when (boundp 'magnars/default-font)
     (set-face-attribute 'default nil :font magnars/default-font)))
 
+(defun use-xemacs-theme ()
+  (interactive)
+  (load-theme 'xemacs)
+  (when (boundp 'magnars/default-font)
+    (set-face-attribute 'default nil :font magnars/default-font)))
+
 (defun toggle-presentation-mode ()
   (interactive)
   (if (string= (frame-parameter nil 'font) magnars/default-font)
@@ -34,7 +40,8 @@
 
 (global-set-key (kbd "C-<f9>") 'toggle-presentation-mode)
 
-(use-default-theme)
+;; (use-default-theme)
+(use-xemacs-theme)
 
 ;; Don't defer screen updates when performing operations
 (setq redisplay-dont-pause t)
@@ -49,6 +56,11 @@
 
 ;; Highlight matching parentheses when the point is on them.
 (show-paren-mode 1)
+
+(when window-system
+  (setq magnars/default-font "DejaVu Sans Mono-9")
+  (setq magnars/presentation-font "DejaVu Sans Mono-12")
+  (set-face-attribute 'default nil :font magnars/default-font))
 
 (when window-system
   (setq frame-title-format '(buffer-file-name "%f" ("%b")))

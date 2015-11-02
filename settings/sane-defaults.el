@@ -15,7 +15,7 @@
 (setq delete-by-moving-to-trash t)
 
 ;; Real emacs knights don't use shift to mark things
-(setq shift-select-mode nil)
+; (setq shift-select-mode nil)
 
 ;; Transparently open compressed files
 (auto-compression-mode t)
@@ -100,6 +100,7 @@
 
 ;; 80 chars is a good width.
 (set-default 'fill-column 80)
+(global-visual-line-mode)
 
 ;; Add parts of each file's directory to the buffer name if not unique
 (require 'uniquify)

@@ -13,6 +13,9 @@
 
 (setq org-directory "~/Dropbox/org")
 (setq org-default-notes-file (concat org-directory "/notes.org"))
-(define-key global-map (kbd "M-<f6>") 'org-capture)
+
+(define-key global-map (kbd "C-S-<f6>") 'org-capture)
+
+(add-hook 'org-mode-hook 'turn-on-auto-fill)
 
 (provide 'setup-org)

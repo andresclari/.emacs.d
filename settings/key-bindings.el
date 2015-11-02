@@ -1,7 +1,9 @@
-;; I don't need to kill emacs that easily
-;; the mnemonic is C-x REALLY QUIT
+;; Lets fix that pesky exit thing
 (global-set-key (kbd "C-x r q") 'save-buffers-kill-terminal)
 (global-set-key (kbd "C-x C-c") 'delete-frame)
+
+;; Save buffers before exiting
+(global-set-key (kbd "s-k") 'kill-this-buffer)
 
 ;; Completion that uses many different methods to find options.
 (global-set-key (kbd "C-.") 'hippie-expand-no-case-fold)
@@ -35,12 +37,12 @@
 (global-set-key (kbd "M-å") 'mc/mark-all-in-region)
 
 ;; Symbol and word specific mark-more
-(global-set-key (kbd "s-æ") 'mc/mark-next-word-like-this)
-(global-set-key (kbd "s-å") 'mc/mark-previous-word-like-this)
-(global-set-key (kbd "M-s-æ") 'mc/mark-all-words-like-this)
-(global-set-key (kbd "s-Æ") 'mc/mark-next-symbol-like-this)
-(global-set-key (kbd "s-Å") 'mc/mark-previous-symbol-like-this)
-(global-set-key (kbd "M-s-Æ") 'mc/mark-all-symbols-like-this)
+(global-set-key (kbd "M-s->") 'mc/mark-next-word-like-this)
+(global-set-key (kbd "M-s-<") 'mc/mark-previous-word-like-this)
+(global-set-key (kbd "C-s->") 'mc/mark-all-words-like-this)
+(global-set-key (kbd "C-s->") 'mc/mark-next-symbol-like-this)
+(global-set-key (kbd "C-s-<") 'mc/mark-previous-symbol-like-this)
+(global-set-key (kbd "C-M-s->") 'mc/mark-all-symbols-like-this)
 
 ;; Extra multiple cursors stuff
 (global-set-key (kbd "C-~") 'mc/reverse-regions)
@@ -56,7 +58,7 @@
 (global-set-key (kbd "C-x r t") 'inline-string-rectangle)
 
 ;; Quickly jump in document with ace-jump-mode
-(define-key global-map (kbd "C-ø") 'ace-jump-mode)
+(define-key global-map (kbd "C-;") 'ace-jump-mode)
 
 ;; Perform general cleanup.
 (global-set-key (kbd "C-c n") 'cleanup-buffer)
@@ -107,7 +109,7 @@
 (global-set-key (kbd "M-W") (λ (save-region-or-current-line 1)))
 
 ;; Make shell more convenient, and suspend-frame less
-(global-set-key (kbd "C-z") 'shell)
+(global-set-key (kbd "C-z") 'eshell)
 (global-set-key (kbd "C-x M-z") 'suspend-frame)
 
 ;; Zap to char
@@ -148,7 +150,6 @@
 ;; toggle two most recent buffers
 (fset 'quick-switch-buffer [?\C-x ?b return])
 (global-set-key (kbd "s-b") 'quick-switch-buffer)
-
 (global-set-key (kbd "s-y") 'bury-buffer)
 
 ;; Revert without any fuss
@@ -182,11 +183,6 @@
 
 ;; Navigation bindings
 (global-set-key [remap goto-line] 'goto-line-with-feedback)
-
-(global-set-key (kbd "<prior>") 'beginning-of-buffer)
-(global-set-key (kbd "<home>") 'beginning-of-buffer)
-(global-set-key (kbd "<next>") 'end-of-buffer)
-(global-set-key (kbd "<end>") 'end-of-buffer)
 (global-set-key (kbd "M-p") 'backward-paragraph)
 (global-set-key (kbd "M-n") 'forward-paragraph)
 
@@ -216,14 +212,6 @@
 (global-set-key (kbd "C-S-f") (λ (ignore-errors (forward-char 5))))
 (global-set-key (kbd "C-S-b") (λ (ignore-errors (backward-char 5))))
 
-(global-set-key (kbd "H-*") 'beginning-of-buffer) ;; H-p
-(global-set-key (kbd "H-n") 'end-of-buffer)
-
-;; Convenience on ThinkPad Keyboard: Use back/forward as pg up/down
-(global-set-key (kbd "<XF86Back>") 'scroll-down)
-(global-set-key (kbd "<XF86Forward>") 'scroll-up)
-(global-set-key (kbd "<XF86WakeUp>") 'beginning-of-buffer)
-
 ;; Query replace regex key binding
 (global-set-key (kbd "M-&") 'query-replace-regexp)
 
@@ -235,16 +223,22 @@
 (global-set-key (kbd "C-c u") 'uncomment-region)
 
 ;; Eval buffer
-(global-set-key (kbd "C-c C-k") 'eval-buffer)
+(global-set-key (kbd "<f12>") 'eval-buffer)
 
 ;; Create scratch buffer
 (global-set-key (kbd "C-c b") 'create-scratch-buffer)
 
 ;; Move windows, even in org-mode
+(global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "<s-right>") 'windmove-right)
 (global-set-key (kbd "<s-left>") 'windmove-left)
 (global-set-key (kbd "<s-up>") 'windmove-up)
 (global-set-key (kbd "<s-down>") 'windmove-down)
+
+(global-set-key (kbd "<C-s-up>") 'shrink-frame)
+(global-set-key (kbd "<C-s-down>") 'enlarge-frame)
+(global-set-key (kbd "<C-s-left>") 'shrink-frame-horizontally)
+(global-set-key (kbd "<C-s-right>") 'enlarge-frame-horizontally)
 
 ;; Magit
 (global-set-key (kbd "C-x m") 'magit-status-fullscreen)

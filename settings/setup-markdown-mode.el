@@ -14,4 +14,6 @@
           (lambda ()
             (setq imenu-generic-expression markdown-imenu-generic-expression)))
 
+(add-hook 'markdown-mode-hook 'turn-on-auto-fill)
+
 (provide 'setup-markdown-mode)
