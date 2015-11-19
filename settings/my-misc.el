@@ -1,3 +1,24 @@
+(menu-bar-mode 1)
+(set-scroll-bar-mode 'right)
+
+;; Monday ftw
+(set-variable 'calendar-week-start-day 1)
+
+;; No graphics please o.O
+(setq speedbar-use-images nil)
+
+;; Set default new frame size
+(add-hook 'before-make-frame-hook
+          #'(lambda ()
+              (add-to-list 'default-frame-alist '(left   . 0))
+              (add-to-list 'default-frame-alist '(top    . 0))
+              (add-to-list 'default-frame-alist '(height . 68))
+              (add-to-list 'default-frame-alist '(width  . 110))
+              (set-cursor-color "red")))
+
+;; Don't follow links and use the actual symlinks
+(setq vc-follow-symlinks nil)
+
 ;; Seed the random-number generator
 (random t)
 
@@ -21,10 +42,10 @@
 ;; Add Urban Dictionary to webjump (C-x g)
 (eval-after-load "webjump"
   '(add-to-list 'webjump-sites '("Urban Dictionary" .
-                             [simple-query
-                              "www.urbandictionary.com"
-                              "http://www.urbandictionary.com/define.php?term="
-                              ""])))
+                                 [simple-query
+                                  "www.urbandictionary.com"
+                                  "http://www.urbandictionary.com/define.php?term="
+                                  ""])))
 
 ;; Fix whitespace on save, but only if the file was clean
 (global-whitespace-cleanup-mode)
@@ -46,5 +67,52 @@
 ;; A bit of misc cargo culting in misc.el
 (setq xterm-mouse-mode t)
 
+;; Find aspell and hunspell automatically
+(setq ispell-program-name "hunspell")
+(setq ispell-local-dictionary "en_US")
+(setq ispell-local-dictionary-alist
+      '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil nil nil utf-8)))
+
+
+;; Information to populate headers automatically
+(setq user-mail-address "andres@steelcode.net")
+(setq header-copyright-notice "
+Permission to use, copy, modify, distribute, and sell this software and its
+documentation for any purpose is hereby granted without fee, provided that
+the above copyright notice appear in all copies and that both that
+copyright notice and this permission notice appear in supporting
+documentation.  No representations are made about the suitability of this
+software for any purpose.  It is provided \"as is\" without express or
+implied warranty.\n")
+
+
+(setq header-copyright-work
+      (concat "
+This source code is licensed to the original client, and cannot be replicated,
+used in other projects outside the original contract specifications, or
+redistributed without prior written consent.\n \nCopyright (c) " (format-time-string "%Y") " SteelCode Consulting. All rights reserved.\n \nhttp://steelcode.net\n"))
+
+(setq work-mode t)
+(defun toggle-work-mode nil
+  "Enables work copyright on files"
+  (interactive)
+  (if work-mode
+      (setq work-mode nil)
+    (setq work-mode t)))
+
+
+(setq planetcyber-default-email user-mail-address)
+(setq planetcyber-address "andres@planet-cyber.net")
+(setq planetcyber-mode nil)
+(defun planetcyber nil
+  "Changes email to PlanetCyber address"
+  (interactive)
+  (if planetcyber-mode
+      (progn
+        (setq user-mail-address planetcyber-default-email)
+        (setq planetcyber-mode nil))
+    (progn
+      (setq user-mail-address planetcyber-address)
+      (setq planetcyber-mode t))))
 
 (provide 'my-misc)

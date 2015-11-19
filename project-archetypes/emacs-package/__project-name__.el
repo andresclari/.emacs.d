@@ -1,8 +1,8 @@
 ;;; __project-name__.el --- __description__
 
-;; Copyright (C) 2013 Magnar Sveen
+;; Copyright (C) 2015 Andres Clari
 
-;; Author: Magnar Sveen <magnars@gmail.com>
+;; Author: Andres Clari <andres@steelcode.net>
 ;; Version: 0.1.0
 ;; Package-Requires: ((s "1.4.0") (dash "1.2.0"))
 

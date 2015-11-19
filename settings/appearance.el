@@ -17,24 +17,24 @@
 ;; Default theme
 (defun use-presentation-theme ()
   (interactive)
-  (when (boundp 'magnars/presentation-font)
-    (set-face-attribute 'default nil :font magnars/presentation-font)))
+  (when (boundp 'st/presentation-font)
+    (set-face-attribute 'default nil :font st/presentation-font)))
 
 (defun use-default-theme ()
   (interactive)
   (load-theme 'default-black)
-  (when (boundp 'magnars/default-font)
-    (set-face-attribute 'default nil :font magnars/default-font)))
+  (when (boundp 'st/default-font)
+    (set-face-attribute 'default nil :font st/default-font)))
 
 (defun use-xemacs-theme ()
   (interactive)
   (load-theme 'xemacs)
-  (when (boundp 'magnars/default-font)
-    (set-face-attribute 'default nil :font magnars/default-font)))
+  (when (boundp 'st/default-font)
+    (set-face-attribute 'default nil :font st/default-font)))
 
 (defun toggle-presentation-mode ()
   (interactive)
-  (if (string= (frame-parameter nil 'font) magnars/default-font)
+  (if (string= (frame-parameter nil 'font) st/default-font)
       (use-presentation-theme)
     (use-default-theme)))
 
@@ -42,6 +42,8 @@
 
 ;; (use-default-theme)
 (use-xemacs-theme)
+(set-cursor-color "red")
+(setq default-frame-alist '((cursor-color . "red")))
 
 ;; Don't defer screen updates when performing operations
 (setq redisplay-dont-pause t)
@@ -57,10 +59,15 @@
 ;; Highlight matching parentheses when the point is on them.
 (show-paren-mode 1)
 
+;; (when window-system
+;;   (setq st/default-font "Liberation Mono-9")
+;;   (setq st/presentation-font "Liberation Mono-12")
+;;   (set-face-attribute 'default nil :font st/default-font))
+
 (when window-system
-  (setq magnars/default-font "DejaVu Sans Mono-9")
-  (setq magnars/presentation-font "DejaVu Sans Mono-12")
-  (set-face-attribute 'default nil :font magnars/default-font))
+  (setq st/default-font "Screen-9")
+  (setq st/presentation-font "DejaVu Sans Mono-12")
+  (set-face-attribute 'default nil :font st/default-font))
 
 (when window-system
   (setq frame-title-format '(buffer-file-name "%f" ("%b")))
@@ -73,13 +80,7 @@
 ;; Unclutter the modeline
 (require 'diminish)
 (eval-after-load "yasnippet" '(diminish 'yas-minor-mode))
-(eval-after-load "eldoc" '(diminish 'eldoc-mode))
-(eval-after-load "paredit" '(diminish 'paredit-mode))
-(eval-after-load "tagedit" '(diminish 'tagedit-mode))
 (eval-after-load "elisp-slime-nav" '(diminish 'elisp-slime-nav-mode))
-(eval-after-load "skewer-mode" '(diminish 'skewer-mode))
-(eval-after-load "skewer-css" '(diminish 'skewer-css-mode))
-(eval-after-load "skewer-html" '(diminish 'skewer-html-mode))
 (eval-after-load "smartparens" '(diminish 'smartparens-mode))
 (eval-after-load "guide-key" '(diminish 'guide-key-mode))
 (eval-after-load "whitespace-cleanup-mode" '(diminish 'whitespace-cleanup-mode))
@@ -91,6 +92,11 @@
         (setq mode-name ,new-name))))
 
 (rename-modeline "js2-mode" js2-mode "JS2")
-(rename-modeline "clojure-mode" clojure-mode "Clj")
+
+(set-face-bold-p 'bold nil)
+(mapc
+ (lambda (face)
+   (set-face-attribute face nil :weight 'normal :underline nil))
+ (face-list))
 
 (provide 'appearance)

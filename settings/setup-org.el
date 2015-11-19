@@ -18,4 +18,11 @@
 
 (add-hook 'org-mode-hook 'turn-on-auto-fill)
 
+(set-face-bold-p 'bold nil)
+(mapc
+ (lambda (face)
+   (set-face-attribute face nil :weight 'normal :underline nil))
+ (face-list))
+
+
 (provide 'setup-org)

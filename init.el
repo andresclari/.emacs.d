@@ -25,11 +25,6 @@
 ;; Set up appearance early
 (require 'appearance)
 
-;; Settings for currently logged in user
-(setq user-settings-dir
-      (concat user-emacs-directory "users/" user-login-name))
-(add-to-list 'load-path user-settings-dir)
-
 ;; Add external projects to load path
 (dolist (project (directory-files site-lisp-dir t "\\w+"))
   (when (file-directory-p project)
@@ -58,39 +53,31 @@
 (defun init--install-packages ()
   (packages-install
    '(magit
-     paredit
-     move-text
-     gist
-     htmlize
+     move-text               ; Allows moveing lines with arrows
+     htmlize                 ; Export buffers as html
      visual-regexp
      markdown-mode
      fill-column-indicator
      flycheck
      flycheck-pos-tip
-     flycheck-clojure
      flx
      f
      flx-ido
      dired-details
-     css-eldoc
      yasnippet
+     js2-mode
      smartparens
      ido-vertical-mode
      ido-at-point
      simple-httpd
      guide-key
-     nodejs-repl
      restclient
      highlight-escape-sequences
      whitespace-cleanup-mode
      elisp-slime-nav
      dockerfile-mode
-     clojure-mode
-     clojure-mode-extra-font-locking
      groovy-mode
      prodigy
-     cider
-     yesql-ghosts
      string-edit
      )))
 
@@ -115,6 +102,15 @@
 (setq guide-key/recursive-key-sequence-flag t)
 (setq guide-key/popup-window-position 'bottom)
 
+;; DWIM Make ssh-agent setup by oh-my-zsh ssh-agent plugin work with Magit on
+;; Linux with XFCE
+(require 'exec-path-from-shell)
+(exec-path-from-shell-copy-env "SSH_AGENT_PID")
+(exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
+
+;; Load external variables into Emacs TODO: (Should extract to a separate file...)
+(exec-path-from-shell-copy-env "GOPATH")
+
 ;; Setup extensions
 (eval-after-load 'ido '(require 'setup-ido))
 (eval-after-load 'org '(require 'setup-org))
@@ -124,10 +120,14 @@
 (eval-after-load 'shell '(require 'setup-shell))
 (require 'setup-hippie)
 (require 'setup-yasnippet)
-(require 'setup-perspective)
 (require 'setup-ffip)
+(require 'setup-php-mode)
 (require 'setup-html-mode)
-(require 'setup-paredit)
+(require 'setup-coffee-mode)
+(require 'setup-go-mode)
+(require 'setup-c-mode)
+(require 'kotlin-mode)
+(require 'setup-web-mode)
 
 (require 'prodigy)
 (global-set-key (kbd "C-x M-m") 'prodigy)
@@ -155,8 +155,6 @@
 (eval-after-load 'markdown-mode '(require 'setup-markdown-mode))
 
 ;; Load stuff on demand
-(autoload 'skewer-start "setup-skewer" nil t)
-(autoload 'skewer-demo "setup-skewer" nil t)
 (autoload 'auto-complete-mode "auto-complete" nil t)
 (eval-after-load 'flycheck '(require 'setup-flycheck))
 
@@ -168,26 +166,25 @@
 (hes-mode)
 (put 'font-lock-regexp-grouping-backslash 'face-alias 'font-lock-builtin-face)
 
-;; Visual regexp
-(require 'visual-regexp)
-(define-key global-map (kbd "M-&") 'vr/query-replace)
-(define-key global-map (kbd "M-/") 'vr/replace)
-
 ;; Functions (load all files in defuns-dir)
 (setq defuns-dir (expand-file-name "defuns" user-emacs-directory))
 (dolist (file (directory-files defuns-dir t "\\w+"))
   (when (file-regular-p file)
     (load file)))
 
+(require 'visual-regexp)
 (require 'expand-region)
 (require 'multiple-cursors)
 (require 'delsel)
-(require 'jump-char)
-(require 'eproject)
 (require 'wgrep)
 (require 'smart-forward)
-(require 'change-inner)
 (require 'multifiles)
+(require 'systemd)
+(require 'rust-mode)
+
+;; TODO Remove me
+;; Load nxHtml for better ERB support for Ruby
+;;(load (concat site-lisp-dir "/nxhtml/autostart.el"))
 
 ;; Don't use expand-region fast keys
 (setq expand-region-fast-keys-enabled nil)
@@ -201,7 +198,6 @@
 (setq fci-rule-width 5)
 ;;(setq fci-rule-color "darkblue")
 (add-hook 'after-change-major-mode-hook 'fci-mode)
-
 
 ;; Browse kill ring
 (require 'browse-kill-ring)
@@ -219,6 +215,8 @@
 (require 'my-misc)
 (when is-mac (require 'mac))
 
+(require 'setup-headers)
+
 ;; Elisp go-to-definition with M-. and back again with M-,
 (autoload 'elisp-slime-nav-mode "elisp-slime-nav")
 (add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t) (eldoc-mode 1)))
@@ -233,6 +231,8 @@
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 
-;; Conclude init by setting up specifics for the current user
-(when (file-exists-p user-settings-dir)
-  (mapc 'load (directory-files user-settings-dir nil "^[^#].*el$")))
+(set-face-bold-p 'bold nil)
+(mapc
+ (lambda (face)
+   (set-face-attribute face nil :weight 'normal :underline nil))
+ (face-list))

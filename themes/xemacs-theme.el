@@ -109,7 +109,18 @@
  '(widget-field-face ((t (:background "gray85"))))
  '(widget-inactive-face ((t (:foreground "dim gray"))))
  '(yellow ((t (:foreground "yellow"))))
- '(zmacs-region ((t (:background "gray65")))))
+ '(zmacs-region ((t (:background "gray65"))))
+
+ ;; Web mode settings
+ '(web-mode-symbol-face ((t (:foreground "blue4"))))
+
+ '(web-mode-doctype-face ((t (:foreground "blue4"))))
+ '(web-mode-html-tag-face ((t (:foreground "dark red"))))
+ '(web-mode-html-attr-name-face ((t (:foreground "red"))))
+
+ ;; Shell customizations
+ '(sh-heredoc ((t (:foreground "green4"))))
+)
 
 ;;;###autoload
 (when load-file-name

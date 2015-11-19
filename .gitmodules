@@ -109,3 +109,18 @@
 [submodule "site-lisp/datomic-snippets"]
 	path = site-lisp/datomic-snippets
 	url = https://github.com/magnars/datomic-snippets.git
+[submodule "site-lisp/systemd-mode"]
+	path = site-lisp/systemd-mode
+	url = git@github.com:holomorph/systemd-mode.git
+[submodule "site-lisp/rust-mode"]
+	path = site-lisp/rust-mode
+	url = git@github.com:rust-lang/rust-mode.git
+[submodule "site-lisp/exec-from-shell"]
+	path = site-lisp/exec-from-shell
+	url = git@github.com:purcell/exec-path-from-shell.git
+[submodule "site-lisp/go-mode"]
+	path = site-lisp/go-mode
+	url = git@github.com:dominikh/go-mode.el.git
+[submodule "site-lisp/kotlin-mode"]
+	path = site-lisp/kotlin-mode
+	url = git@github.com:quantumman/kotlin-mode.git

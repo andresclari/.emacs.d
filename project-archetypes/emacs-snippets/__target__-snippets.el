@@ -1,8 +1,8 @@
 ;;; __target__-snippets.el --- Yasnippets for __name__
 
-;; Copyright (C) __year__ Magnar Sveen
+;; Copyright (C) __year__ Andres Clari
 
-;; Author: Magnar Sveen <magnars@gmail.com>
+;; Author: Andres Clari <andres@steelcode.net>
 ;; Keywords: snippets
 ;; Version: 0.1.0
 ;; Package-Requires: ((s "1.4.0") (dash "1.2.0") (yasnippet "0.6.1"))

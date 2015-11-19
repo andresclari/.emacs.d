@@ -1,5 +1,9 @@
 ;;; setup-js2-mode.el --- tweak js2 settings -*- lexical-binding: t; -*-
 
+;; Default js indentation levels
+(setq-default js2-basic-offset 2)
+(setq js-indent-level 2)
+
 (setq-default js2-allow-rhino-new-expr-initializer nil)
 (setq-default js2-auto-indent-p nil)
 (setq-default js2-enter-indents-newline nil)
@@ -26,102 +30,6 @@
 
 (require 'js2-imenu-extras)
 (js2-imenu-extras-setup)
-
-;; Set up wrapping of pairs, with the possiblity of semicolons thrown into the mix
-
-(defun js2r--setup-wrapping-pair (open close)
-  (define-key js2-mode-map (read-kbd-macro open) (λ (js2r--self-insert-wrapping open close)))
-  (unless (s-equals? open close)
-    (define-key js2-mode-map (read-kbd-macro close) (λ (js2r--self-insert-closing open close)))))
-
-(define-key js2-mode-map (kbd ";")
-  (λ (if (looking-at ";")
-         (forward-char)
-       (funcall 'self-insert-command 1))))
-
-(defun js2r--self-insert-wrapping (open close)
-  (cond
-   ((use-region-p)
-    (save-excursion
-      (let ((beg (region-beginning))
-            (end (region-end)))
-        (goto-char end)
-        (insert close)
-        (goto-char beg)
-        (insert open))))
-
-   ((and (s-equals? open close)
-         (looking-back (regexp-quote open))
-         (looking-at (regexp-quote close)))
-    (forward-char (length close)))
-
-   ((js2-mode-inside-comment-or-string)
-    (funcall 'self-insert-command 1))
-
-   (:else
-    (let ((end (js2r--something-to-close-statement)))
-      (insert open close end)
-      (backward-char (+ (length close) (length end)))
-      (js2r--remove-all-this-cruft-on-backward-delete)))))
-
-(defun js2r--remove-all-this-cruft-on-backward-delete ()
-  (set-temporary-overlay-map
-   (let ((map (make-sparse-keymap)))
-     (define-key map (kbd "DEL") 'undo-tree-undo)
-     (define-key map (kbd "C-h") 'undo-tree-undo)
-     map) nil))
-
-(defun js2r--self-insert-closing (open close)
-  (if (and (looking-back (regexp-quote open))
-           (looking-at (regexp-quote close)))
-      (forward-char (length close))
-    (funcall 'self-insert-command 1)))
-
-(defun js2r--does-not-need-semi ()
-  (save-excursion
-    (back-to-indentation)
-    (or (looking-at "if ")
-        (looking-at "function ")
-        (looking-at "for ")
-        (looking-at "while ")
-        (looking-at "try ")
-        (looking-at "} catch ")
-        (looking-at "} else "))))
-
-(defun js2r--comma-unless (delimiter)
-  (if (looking-at (concat "[\n\t\r ]*" (regexp-quote delimiter)))
-      ""
-    ","))
-
-(defun js2r--something-to-close-statement ()
-  (cond
-   ((and (js2-block-node-p (js2-node-at-point)) (looking-at " *}")) ";")
-   ((not (eolp)) "")
-   ((js2-array-node-p (js2-node-at-point)) (js2r--comma-unless "]"))
-   ((js2-object-node-p (js2-node-at-point)) (js2r--comma-unless "}"))
-   ((js2-object-prop-node-p (js2-node-at-point)) (js2r--comma-unless "}"))
-   ((js2-call-node-p (js2-node-at-point)) (js2r--comma-unless ")"))
-   ((js2r--does-not-need-semi) "")
-   (:else ";")))
-
-(js2r--setup-wrapping-pair "(" ")")
-(js2r--setup-wrapping-pair "{" "}")
-(js2r--setup-wrapping-pair "[" "]")
-(js2r--setup-wrapping-pair "\"" "\"")
-(js2r--setup-wrapping-pair "'" "'")
-
-;;
-
-(define-key js2-mode-map (kbd "C-c RET jt") 'jump-to-test-file)
-(define-key js2-mode-map (kbd "C-c RET ot") 'jump-to-test-file-other-window)
-(define-key js2-mode-map (kbd "C-c RET js") 'jump-to-source-file)
-(define-key js2-mode-map (kbd "C-c RET os") 'jump-to-source-file-other-window)
-(define-key js2-mode-map (kbd "C-c RET jo") 'jump-between-source-and-test-files)
-(define-key js2-mode-map (kbd "C-c RET oo") 'jump-between-source-and-test-files-other-window)
-
-(define-key js2-mode-map (kbd "C-c RET dp") 'js2r-duplicate-object-property-node)
-
-(define-key js2-mode-map (kbd "C-c RET ta") 'toggle-assert-refute)
 
 (defadvice js2r-inline-var (after reindent-buffer activate)
   (cleanup-buffer))

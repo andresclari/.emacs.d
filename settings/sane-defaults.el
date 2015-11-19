@@ -65,6 +65,8 @@
 
 ;; Never insert tabs
 (set-default 'indent-tabs-mode nil)
+(setq c-basic-offset 4)
+(setq tab-width 4)
 
 ;; Show me empty lines after buffer end
 (set-default 'indicate-empty-lines t)
@@ -100,7 +102,7 @@
 
 ;; 80 chars is a good width.
 (set-default 'fill-column 80)
-(global-visual-line-mode)
+;;(global-visual-line-mode)
 
 ;; Add parts of each file's directory to the buffer name if not unique
 (require 'uniquify)
