@@ -1,6 +1,9 @@
 auto-save-list
 backups
 history
+ido.last
+places
+recentf
 *~
 .places
 session.*
